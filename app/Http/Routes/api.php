@@ -4,8 +4,9 @@
  * @var $router EventManagementSystem\App\Http\Router
  */
 
-$router->get('/welcome', 'WelcomeController@index');
-$router->post('/inputData', 'WelcomeController@inputform');
-$router->get('/eventData', 'WelcomeController@eventData');
-$router->get('/singleEventData/{id}', 'WelcomeController@singleEventData')->int('id');
-$router->delete('/deleteEvent/{id}', 'WelcomeController@deleteEventData')->int('id');
+// $router->get('/welcome', 'WelcomeController@index');
+$router->post('/inputData', 'EventController@inputform');
+$router->get('/eventData', 'EventController@eventData');
+$router->get('/singleEventData/{id}', 'EventController@singleEventData')->int('id');
+$router->put('/updateEventData/{id}', 'EventController@updateEventData')->int('id');
+$router->delete('/deleteEvent/{id}', 'EventController@deleteEventData')->int('id');

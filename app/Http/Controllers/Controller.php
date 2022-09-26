@@ -7,11 +7,6 @@ use EventManagementSystem\Framework\Validator\ValidationException;
 
 abstract class Controller extends BaseController
 {
-    // 
-
-
-
-
     public function validate($data, $rules, $messages = [])
     {
         try {

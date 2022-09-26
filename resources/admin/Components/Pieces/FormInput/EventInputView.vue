@@ -1,9 +1,9 @@
 <template>
-    <div class="close_button">
+    <!-- <div class="close_button">
         <router-link to="/" tag="button">
             <el-button type="info">Close</el-button>
         </router-link>
-    </div>
+    </div> -->
     <div class="container">
         <div class="wrap">
             <el-form label-width="100px">
@@ -11,15 +11,16 @@
                     <!-- <div> -->
                     <div class="input_size">
                         <el-input type="text" v-model="event.title" />
-                        <small class="danger" v-if="errors.title">{{ errors.title }}</small>
+                        <p class="danger" v-if="errors.title">{{ errors.title.required }}</p>
                     </div>
+
                     <!-- </div> -->
                 </el-form-item>
 
                 <el-form-item label="Event Details">
                     <div class="input_size">
                         <el-input type="textarea" v-model="event.details" />
-                        <small class="danger" v-if="errors.details">{{ errors.details }}</small>
+                        <p class="danger" v-if="errors.details">{{ errors.details }}</p>
                     </div>
                 </el-form-item>
                 <el-form-item label="Category" class="required">
@@ -32,7 +33,7 @@
                                 :value="value.term_id"
                             />
                         </el-select>
-                        <small class="danger" v-if="errors.category">{{ errors.category }}</small>
+                        <p class="danger" v-if="errors.category">{{ errors.category.required }}</p>
                     </div>
                 </el-form-item>
                 <el-form-item label="Organizer" class="required">
@@ -45,7 +46,7 @@
                                 :value="value.name"
                             />
                         </el-select>
-                        <small class="danger" v-if="errors.organizer">{{ errors.organizer }}</small>
+                        <p class="danger" v-if="errors.organizer">{{ errors.organizer.required }}</p>
                     </div>
                 </el-form-item>
                 <el-form-item label=" Event Type">
@@ -53,7 +54,7 @@
                         <el-radio label="Online" />
                         <el-radio label="Offline" />
                     </el-radio-group>
-                    <small class="danger" v-if="errors.onlineEvent">{{ errors.onlineEvent }}</small>
+                    <p class="danger" v-if="errors.onlineEvent">{{ errors.onlineEvent.required }}</p>
                 </el-form-item>
                 <!-- <el-form-item label="Banner Url">
                     <div class="input_size">
@@ -101,7 +102,7 @@
                             style="width: 100%"
                             v-model="event.startingDate"
                         />
-                        <small class="danger" v-if="errors.startingDate">{{ errors.startingDate }}</small>
+                        <p class="danger" v-if="errors.startingDate">{{ errors.startingDate.required }}</p>
                     </div>
                 </el-form-item>
 
@@ -115,7 +116,7 @@
                             style="width: 100%"
                             v-model="event.startingTime"
                         />
-                        <small class="danger" v-if="errors.startingTime">{{ errors.startingTime }}</small>
+                        <p class="danger" v-if="errors.startingTime">{{ errors.startingTime.required }}</p>
                     </div>
                 </el-form-item>
 
@@ -129,7 +130,7 @@
                             style="width: 100%"
                             v-model="event.endingDate"
                         />
-                        <small class="danger" v-if="errors.endingDate">{{ errors.endingDate }}</small>
+                        <p class="danger" v-if="errors.endingDate">{{ errors.endingDate.required }}</p>
                     </div>
                 </el-form-item>
                 <el-form-item label="End Time" class="required">
@@ -142,19 +143,19 @@
                             style="width: 100%"
                             v-model="event.endingTime"
                         />
-                        <small class="danger" v-if="errors.endingTime">{{ errors.endingTime }}</small>
+                        <p class="danger" v-if="errors.endingTime">{{ errors.endingTime.required }}</p>
                     </div>
                 </el-form-item>
                 <el-form-item label="Location" class="required">
                     <div class="input_size">
                         <el-input type="text" v-model="event.location" />
-                        <small class="danger" v-if="errors.location">{{ errors.location }}</small>
+                        <p class="danger" v-if="errors.location">{{ errors.location.required }}</p>
                     </div>
                 </el-form-item>
                 <el-form-item label="Limit" class="required">
                     <div class="input_size">
                         <el-input-number :min="1" v-model="event.limit" />
-                        <small class="danger" v-if="errors.limit">{{ errors.limit }}</small>
+                        <p class="danger" v-if="errors.limit">{{ errors.limit.required }}</p>
                     </div>
                 </el-form-item>
                 <el-form-item label="Deadline" class="required">
@@ -167,7 +168,7 @@
                             style="width: 100%"
                             v-model="event.deadline"
                         />
-                        <small class="danger" v-if="errors.deadline">{{ errors.deadline }}</small>
+                        <p class="danger" v-if="errors.deadline">{{ errors.deadline.required }}</p>
                     </div>
                 </el-form-item>
 
@@ -296,6 +297,8 @@ export default {
 
 .danger {
     color: red;
+    font-size: 15px;
+    line-height: 0.5;
 }
 
 .close_button {

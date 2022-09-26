@@ -16411,7 +16411,9 @@
 .el-dialog__body {
   padding: 15px 20px 15px 20px;
 }
-
+.el-form-item__label {
+  padding: initial !important;
+}
 .el-tag + .el-tag {
   margin-left: 10px;
 }

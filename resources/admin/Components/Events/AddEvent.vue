@@ -32,6 +32,7 @@ export default {
             Rest.post("inputData", that.event)
                 .then((response) => {
                     that.$emit("onCreate");
+                    that.event = {};
                     // that.createInputForm = false;
                     // this.$emit("onCreate", that.visble);
                     ElMessage({
@@ -46,7 +47,10 @@ export default {
                     //     name: "AllEvents",
                     // });
                 })
-                .catch((err) => console.log(err));
+                .catch((error) => {
+                    console.log(error.responseJSON);
+                    that.errors = error.responseJSON;
+                });
             // EMS.adminPost({
             //     route: "create_event",
             //     ems_nonce: ajax_url.ems_nonce,

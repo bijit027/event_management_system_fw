@@ -16,10 +16,23 @@
                 </template>
             </el-dialog>
         </template> -->
-        <el-dialog v-model="createInputForm" title="Outer Dialog">
+        <el-dialog v-model="AddEventFormVisible" title="Event Form">
             <!-- <AddEvent :createInputForm="createInputForm" @onCreate="modalVisble" /> -->
             <AddEvent @onCreate="modalVisble" />
         </el-dialog>
+        <!--View edit modal-->
+        <el-dialog v-model="EditEventFormVisible" title="Edit Event" :show-close="false">
+            <div class="modal_button">
+                <el-button class="close_button" type="danger" size="small" @click="closeEditModal()">
+                    <el-icon class="el-icon--left"><CircleCloseFilled /></el-icon>
+                    Close
+                </el-button>
+            </div>
+
+            <!-- <AddEvent :createInputForm="createInputForm" @onCreate="modalVisble" /> -->
+            <EditEvent :eventID="eventID" @onCreate="modalVisble" />
+        </el-dialog>
+
         <!--end-->
         <el-row>
             <div class="ems_header event_wraper">
@@ -90,8 +103,9 @@
 
 <script>
 import AddEvent from "./AddEvent.vue";
+import EditEvent from "./EditEvent.vue";
 import Rest from "@/admin/Bits/Rest";
-import { CopyDocument } from "@element-plus/icons-vue";
+import { CircleCloseFilled } from "@element-plus/icons-vue";
 // import Clipboard from "clipboard";
 import { ElButton, ElMessage } from "element-plus";
 import { ElNotification } from "element-plus";
@@ -102,7 +116,8 @@ export default {
     },
     data() {
         return {
-            createInputForm: false,
+            AddEventFormVisible: false,
+            EditEventFormVisible: false,
             loading: false,
             events: [],
             errorMessage: null,
@@ -112,10 +127,12 @@ export default {
             pageSize: 10,
             deleteingForm: {},
             deleteDialogVisible: false,
+            eventID: "",
         };
     },
     components: {
         AddEvent,
+        EditEvent,
     },
 
     mounted() {
@@ -135,10 +152,13 @@ export default {
         },
     },
     methods: {
+        closeEditModal() {
+            this.EditEventFormVisible = false;
+        },
         modalVisble() {
-            this.createInputForm = false;
+            this.AddEventFormVisible = false;
             this.fetchData();
-            console.log(this.createInputForm);
+            console.log(this.AddEventFormVisible);
         },
         handleCurrentChange(val) {
             this.page = val;
@@ -152,15 +172,17 @@ export default {
         },
 
         addEvent() {
-            this.createInputForm = true;
+            this.AddEventFormVisible = true;
             // this.$router.push({
             //     path: `/addEvent`,
             // });
         },
         editEventData(index, row) {
-            this.$router.push({
-                path: `/edit-event/${row.ID}`,
-            });
+            this.eventID = row.ID;
+            this.EditEventFormVisible = true;
+            // this.$router.push({
+            //     path: `/edit-event/${row.ID}`,
+            // });
         },
         deletEvent(id) {
             Rest.delete(`deleteEvent/${id}`, {
@@ -304,5 +326,12 @@ export default {
 
 .tooltip-text {
     margin-right: 10px;
+}
+.close_button {
+    float: right;
+}
+.modal_button {
+    width: 100%;
+    overflow: hidden;
 }
 </style>

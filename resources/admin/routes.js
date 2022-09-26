@@ -1,7 +1,8 @@
 import Dashboard from './Components/Dashboard.vue';
 import AddEvent from "./Components/Events/AddEvent.vue";
 import AllEvents from "./Components/Events/AllEvents.vue";
-import ViewEvent from "./Components/Events/ViewEvent.vue"
+import ViewEvent from "./Components/Events/ViewEvent.vue";
+import EditEvent from "./Components/Events/EditEvent.vue";
 
 export default [
     {
@@ -21,6 +22,11 @@ export default [
         path: "/show-event/:eventID",
         name: "ViewEvent",
         component: ViewEvent,
+    },
+    {
+        path: "/edit-event/:eventID",
+        name: "EditEvent",
+        component: EditEvent,
     },
 
 ];
