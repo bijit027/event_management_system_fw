@@ -14,6 +14,7 @@ import { ElButton, ElMessage } from "element-plus";
 import EventInputView from "../Pieces/FormInput/EventInputView.vue";
 export default {
     props: ["eventID"],
+    emits: ["onUpdate"],
     data() {
         return {
             // eventID: this.$route.params.eventID,
@@ -30,16 +31,31 @@ export default {
         EventInputView,
     },
 
-    mounted() {
-        this.fetchData();
+    watch: {
+        eventID() {
+            console.log(this.eventID);
+            if (this.eventID) {
+                this.fetchData();
+            } else {
+                this.value = {};
+            }
+        },
     },
+
+    // mounted() {
+    //     console.log("mounted");
+    //     this.fetchData();
+    // },
     methods: {
         fetchData() {
-            Rest.get(`singleEventData/${this.eventID}`)
+            const that = this;
+            console.log(that.eventID);
+            Rest.get(`singleEventData/${that.eventID}`)
                 .then((response) => {
-                    this.event = response.single_event_data;
-                    console.log(this.event);
-                    this.value = JSON.parse(response.single_event_data.eventData);
+                    that.event = response.single_event_data;
+                    console.log(that.event);
+                    that.value = JSON.parse(response.single_event_data.eventData);
+                    that.eventID = "";
                 })
                 .catch((err) => console.log(err));
             // const that = this;
@@ -59,11 +75,25 @@ export default {
         },
 
         onSubmit() {
-            Rest.put(`updateEventData/${this.eventID}`, this.value)
-                .then((res) => {
-                    router.go("/");
+            const that = this;
+            Rest.put(`updateEventData/${that.eventID}`, that.value)
+                .then((response) => {
+                    console.log(response.data.message);
+                    that.value = {};
+                    that.$emit("onUpdate");
+
+                    // router.go("/");
+                    ElMessage({
+                        showClose: true,
+                        message: response.data.message,
+                        type: "success",
+                    });
                 })
-                .catch((err) => console.log(err));
+                .catch((error) => {
+                    // that.$emit("onUpdate");
+                    // console.log(error);
+                    that.errors = error.responseJSON;
+                });
             // if (typeof this.value.category === "string") {
             //     this.value.category = this.categoryID;
             // }

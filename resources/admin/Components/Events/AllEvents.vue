@@ -24,13 +24,13 @@
         <el-dialog v-model="EditEventFormVisible" title="Edit Event" :show-close="false">
             <div class="modal_button">
                 <el-button class="close_button" type="danger" size="small" @click="closeEditModal()">
-                    <el-icon class="el-icon--left"><CircleCloseFilled /></el-icon>
+                    <!-- <el-icon class="el-icon--left"><CircleCloseFilled /></el-icon> -->
                     Close
                 </el-button>
             </div>
 
             <!-- <AddEvent :createInputForm="createInputForm" @onCreate="modalVisble" /> -->
-            <EditEvent :eventID="eventID" @onCreate="modalVisble" />
+            <EditEvent :eventID="eventID" @onUpdate="EditEventmodalVisble" />
         </el-dialog>
 
         <!--end-->
@@ -105,7 +105,7 @@
 import AddEvent from "./AddEvent.vue";
 import EditEvent from "./EditEvent.vue";
 import Rest from "@/admin/Bits/Rest";
-import { CircleCloseFilled } from "@element-plus/icons-vue";
+// import { CircleCloseFilled } from "@element-plus/icons-vue";
 // import Clipboard from "clipboard";
 import { ElButton, ElMessage } from "element-plus";
 import { ElNotification } from "element-plus";
@@ -152,8 +152,15 @@ export default {
         },
     },
     methods: {
+        EditEventmodalVisble() {
+            this.EditEventFormVisible = false;
+            this.fetchData();
+            this.eventID = "";
+            // console.log(this.AddEventFormVisible);
+        },
         closeEditModal() {
             this.EditEventFormVisible = false;
+            this.eventID = "";
         },
         modalVisble() {
             this.AddEventFormVisible = false;
@@ -180,6 +187,7 @@ export default {
         editEventData(index, row) {
             this.eventID = row.ID;
             this.EditEventFormVisible = true;
+            console.log(this.eventID);
             // this.$router.push({
             //     path: `/edit-event/${row.ID}`,
             // });
@@ -266,7 +274,7 @@ export default {
             Rest.get("eventData")
                 .then((res) => {
                     // productInformation.productData = res
-                    console.log(res.event_data);
+                    console.log(res);
                     this.events = res.event_data;
                 })
                 .catch((err) => console.log(err));

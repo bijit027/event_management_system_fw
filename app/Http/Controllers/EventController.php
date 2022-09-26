@@ -10,27 +10,20 @@ use EventManagementSystem\App\Http\Requests\EventRequest;
 class EventController extends Controller
 {
     // use ValidatorTrait;
-    public function index(Request $request)
-    {
-        $args = array(
-            'numberposts' => -1,
-            'orderby' => 'date',
-            'order' => 'ASC',
-            'post_type' => 'ems_event_data',
-            'post_status' => 'publish',
-        );
-        return get_posts($args);
-    }
+    // public function index(Request $request)
+    // {
+    //     $args = array(
+    //         'numberposts' => -1,
+    //         'orderby' => 'date',
+    //         'order' => 'ASC',
+    //         'post_type' => 'ems_event_data',
+    //         'post_status' => 'publish',
+    //     );
+    //     return ["event_data" => get_posts($args)];
+    // }
 
-    public function inputform(Request $request)
+    public function createEvent(EventRequest $request)
     {
-        $rules = EventRequest::$rules;
-        $messages = EventRequest::$messages;
-        // $this->validateData($request->all(), $rules, $messages);
-        $this->validate($request->all(), $rules, $messages);
-
-        // dd(sanitize_text_field($request->title));
-        // $request->title =  $request->getSafe('title', 'sanitize_text_field');
         $value = [
             "title"         => 'sanitize_text_field',
             "onlineEvent"   => 'sanitize_text_field',
@@ -69,7 +62,7 @@ class EventController extends Controller
                 500
             );
         }
-        wp_set_object_terms($eventId, [$categoryId], 'eventCategory');
+        // wp_set_object_terms($eventId, [$categoryId], 'eventCategory');
         return wp_send_json_success(
             [
                 "message" => __("Successfully inserted data", " event-management-system"),
@@ -86,7 +79,7 @@ class EventController extends Controller
         // ];
     }
 
-    public function updateEventData(Request $request)
+    public function updateEventData(EventRequest $request)
     {
         // dd($request->only(['id']));
 
@@ -110,21 +103,6 @@ class EventController extends Controller
         foreach ($value as $key => $sanitizer) {
             $eventData[$key] = $request->getSafe($key, $sanitizer);
         }
-
-
-        // $eventData['title'] = $request->getSafe("title", 'sanitize_text_field');
-        // $eventData['details'] = $request->getSafe("details", 'sanitize_textarea_field');
-        // $eventData['onlineEvent'] = $request->getSafe("onlineEvent", 'sanitize_text_field');
-        // $eventData['category'] = $request->getSafe("category", 'sanitize_text_field');
-        // $eventData['organizer'] = $request->getSafe("organizer", 'sanitize_text_field');
-        // $eventData['limit'] = $request->getSafe("limit", 'sanitize_text_field');
-        // $eventData['startingDate'] = $request->getSafe("startingDate", 'sanitize_text_field');
-        // $eventData['startingTime'] = $request->getSafe("startingTime", 'sanitize_text_field');
-        // $eventData['endingDate'] = $request->getSafe("endingDate", 'sanitize_text_field');
-        // $eventData['endingTime'] = $request->getSafe("endingTime", 'sanitize_text_field');
-        // $eventData['location'] = $request->getSafe("location", 'sanitize_text_field');
-        // $eventData['deadline'] = $request->getSafe("deadline", 'sanitize_text_field');
-
         // dd($data);
 
 
@@ -148,18 +126,22 @@ class EventController extends Controller
 
         $eventId =  wp_update_post($data, true);
         if (is_wp_error($eventId)) {
-            return
+            return wp_send_json_error(
                 [
                     "error" => __("Error while updating data", "event-management-system"),
-                ];
+                ],
+                500
+            );
         }
 
         // wp_set_object_terms($eventId, [$categoryId], 'eventCategory');
 
-        return
+        return wp_send_json_success(
             [
                 "message" => __("Successfully updated Data", "event-management-system"),
-            ];
+            ],
+            200
+        );
     }
 
     public function eventData()
@@ -199,24 +181,23 @@ class EventController extends Controller
     public function deleteEventData(Request $request)
     {
         // dd($request->id);
-        try {
-            // $delete = wp_delete_post($request->id);
-            $delete = wp_delete_post($request->getSafe('id', '', 'intval'));
-            if ($delete) {
-                return [
-                    'status' => 200,
-                    'message' => __('Event has been deleted'),
-                ];
-            }
+
+        // $delete = wp_delete_post($request->id);
+        $delete = wp_delete_post($request->getSafe('id', '', 'intval'));
+        if ($delete) {
             return [
-                'status' => 500,
-                'error' => __('Something Error happened'),
-            ];
-        } catch (Exception $ex) {
-            return [
-                'status' => 500,
-                'message' => __($ex->message),
+                'status' => 200,
+                'message' => __('Event has been deleted'),
             ];
         }
+        return [
+            'status' => 500,
+            'error' => __('Something Error happened'),
+        ];
+
+        return [
+            'status' => 500,
+            'message' => __($ex->message),
+        ];
     }
 }

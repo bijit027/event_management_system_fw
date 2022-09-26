@@ -271,7 +271,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 .imagewrap img {
     width: 100%;
     height: 100%;
@@ -310,5 +310,19 @@ export default {
 }
 .input_size {
     width: 80%;
+}
+.el-form-item__label {
+    flex: 0 0 auto;
+    text-align: right;
+    font-size: var(--el-form-label-font-size);
+    color: var(--el-text-color-regular);
+    line-height: 40px;
+    padding: 0 12px 0 0;
+    box-sizing: border-box;
+}
+.default .el-form-item > * > label {
+    border: none;
+    background: none;
+    padding: 0;
 }
 </style>

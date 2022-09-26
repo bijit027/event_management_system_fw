@@ -29,7 +29,7 @@ export default {
             // console.log(that.createInputForm);
             // that.createInputForm = false;
 
-            Rest.post("inputData", that.event)
+            Rest.post("createEvent", that.event)
                 .then((response) => {
                     that.$emit("onCreate");
                     that.event = {};
